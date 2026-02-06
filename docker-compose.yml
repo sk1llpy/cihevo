@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    command: python3 manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - db
+    
+  bot:
+    build: .
+    command: python3 -m bot polling
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+
+  api:
+    build: .
+    command: uvicorn API.main:app --reload --host 0.0.0.0 --port 9999
+    volumes:
+      - .:/app
+    ports:
+      - "9999:9999"
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+  redis:
+    image: redis:rc-alpine3.12
+    ports:
+      - 6379:6379
+    volumes:
+      - redis_data:/redis_data
+
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: cihevo_db
+      POSTGRES_USER: cihevo_admin
+      POSTGRES_PASSWORD: 4321CihevoBoutique
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    env_file:
+      - .env
+    restart: always
+
+volumes:
+  postgres_data:
+  redis_data:
