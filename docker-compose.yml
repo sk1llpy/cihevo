@@ -3,11 +3,11 @@ version: '3.8'
 services:
   web:
     build: .
-    command: python3 manage.py runserver 0.0.0.0:8000
+    command: python3 manage.py runserver 0.0.0.0:8888
     volumes:
       - .:/app
     ports:
-      - "8000:8000"
+      - "8888:8888"
     env_file:
       - .env
     depends_on:
@@ -23,11 +23,11 @@ services:
 
   api:
     build: .
-    command: uvicorn API.main:app --reload --host 0.0.0.0 --port 9999
+    command: uvicorn API.main:app --reload --host 0.0.0.0 --port 7777
     volumes:
       - .:/app
     ports:
-      - "9999:9999"
+      - "7777:7777"
     env_file:
       - .env
     depends_on:
@@ -49,7 +49,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "5435:5432"
     env_file:
       - .env
     restart: always
