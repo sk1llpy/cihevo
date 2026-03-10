@@ -112,4 +112,9 @@ async def phone_number_handler(message: types.Message, state: FSMContext, sessio
     )
     await state.clear()
     await message.answer(text=text, reply_markup = await menu.button())
-        
+
+
+@router.message(F.text, F.chat.type == "private")
+async def website_handler(message: types.Message):
+    await message.answer(text=f"""<b>Katalogga kirish uchun bosing!</b>""", reply_markup=types.InlineKeyboardMarkup(inline_keyboard=[[types.InlineKeyboardButton(text=f"Katalog", web_app=types.WebAppInfo(url="https://cihevoboutique.uz"))]]))
+    

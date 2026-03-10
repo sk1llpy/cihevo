@@ -27,7 +27,7 @@ class AsyncProductRepository(AsyncRepository):
             .options(
                 joinedload(ProductsTable.brand),
                 joinedload(ProductsTable.category),
-                selectinload(ProductsTable.product_photos),
+                selectinload(ProductsTable.photos),
             )
         )
 
@@ -43,7 +43,7 @@ class AsyncProductRepository(AsyncRepository):
             .options(
                 joinedload(ProductsTable.brand),
                 joinedload(ProductsTable.category),
-                selectinload(ProductsTable.product_photos),
+                selectinload(ProductsTable.photos),
             )
         )
 
@@ -93,9 +93,9 @@ class AsyncProductRepository(AsyncRepository):
             "sale_price": product.sale_price,
 
             "photos": [
-                f"http://localhost:8000/media/{photo.photo}"
+                f"http://localhost:8888/media/{photo.photo}"
                 for photo in sorted(
-                    product.product_photos,
+                    product.photos,
                     key=lambda p: p.is_main,
                     reverse=True,
                 )
@@ -179,7 +179,7 @@ class AsyncProductRepository(AsyncRepository):
         query = select(ProductsTable).options(
             joinedload(ProductsTable.brand),
             joinedload(ProductsTable.category),
-            selectinload(ProductsTable.product_photos),
+            selectinload(ProductsTable.photos),
         )
 
         conditions = []
